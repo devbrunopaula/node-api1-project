@@ -33,7 +33,7 @@ export const getUserById = (req, res) => {
   const {id} = req.params
   const foundUser = users.find((user) => user.id === id)
   if (!foundUser) {
-    res.status(400).json({error: 'User Id is not valid'})
+    res.status(404).json({error: 'User Id is not valid'})
   }
 
   res.status(200).json({user: foundUser})
@@ -44,7 +44,7 @@ export const deleteUser = (req, res) => {
   const {id} = req.params
   const foundUser = users.find((user) => user.id === id)
   if (!foundUser) {
-    res.status(400).json({error: 'User Id is not valid'})
+    res.status(404).json({error: 'User Id is not valid'})
   }
 
   users = users.filter((user) => user.id !== id)
@@ -77,6 +77,7 @@ export const updatedUser = (req, res) => {
   if (!foundUser) {
     res.status(400).json({error: 'User Id is not valid'})
   }
-  users = users.filter((user) => user.id !== id)
+  users = users.find((user) => user.id === id)
+
   res.status(200).send({message: `User width ID ${id} has been updated`})
 }

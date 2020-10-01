@@ -1,12 +1,13 @@
 import express from 'express'
 import cors from 'cors'
-import usersRoutes from './routes/api/users.js'
-
+import usersRoutes from './resources/users/user.router.js'
+import morgan from 'morgan'
 const app = express()
 
 // Middlewares
 app.use(express.json())
 app.use(cors())
+app.use(morgan('dev'))
 
 // Routing
 app.use('/api/users', usersRoutes)

@@ -18,14 +18,20 @@ export const getUsers = (req, res) => {
 // Create a Users
 export const createUser = (req, res) => {
   if (!req.body.name || !req.body.bio) {
-    res.status(400).json({error: 'User values are required'})
+    return res.status(400).json({error: 'User values are required'})
   }
 
-  const userReq = req.body
-  const id = uuidv4()
-  const user = {id, ...userReq, createdAt: new Date()}
-  users.push(user)
-  res.status(201).json({user: user})
+  try {
+    const userReq = req.body
+    const id = uuidv4()
+    const user = {id, ...userReq, createdAt: new Date()}
+    users.push(user)
+    res.status(201).json({user: user})
+  } catch (error) {
+    res.status(500).json({
+      errorMessage: 'There was an error while saving the user to the database',
+    })
+  }
 }
 
 // Create a Single User By Id
@@ -33,7 +39,7 @@ export const getUserById = (req, res) => {
   const {id} = req.params
   const foundUser = users.find((user) => user.id === id)
   if (!foundUser) {
-    res.status(404).json({error: 'User Id is not valid'})
+    return res.status(404).json({error: 'User Id is not valid'})
   }
 
   res.status(200).json({user: foundUser})
@@ -44,7 +50,7 @@ export const deleteUser = (req, res) => {
   const {id} = req.params
   const foundUser = users.find((user) => user.id === id)
   if (!foundUser) {
-    res.status(404).json({error: 'User Id is not valid'})
+    return res.status(404).json({error: 'User Id is not valid'})
   }
 
   users = users.filter((user) => user.id !== id)
@@ -57,7 +63,7 @@ export const upadateUserProperties = (req, res) => {
   const {name, bio} = req.body
   const foundUser = users.find((user) => user.id === id)
   if (!foundUser) {
-    res.status(400).json({error: 'User Id is not valid'})
+    return res.status(400).json({error: 'User Id is not valid'})
   }
   let user = users.find((user) => user.id === id)
   user.updatedAt = new Date()
@@ -75,7 +81,7 @@ export const updatedUser = (req, res) => {
   const userReq = req.body
   const foundUser = users.find((user) => user.id === id)
   if (!foundUser) {
-    res.status(400).json({error: 'User Id is not valid'})
+    return res.status(400).json({error: 'User Id is not valid'})
   }
   users = users.find((user) => user.id === id)
 

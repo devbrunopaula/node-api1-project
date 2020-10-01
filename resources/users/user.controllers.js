@@ -39,7 +39,9 @@ export const getUserById = (req, res) => {
   const {id} = req.params
   const foundUser = users.find((user) => user.id === id)
   if (!foundUser) {
-    return res.status(404).json({error: 'User Id is not valid'})
+    return res
+      .status(404)
+      .json({message: 'The user with the specified ID does not exist.'})
   }
 
   res.status(200).json({user: foundUser})
@@ -63,7 +65,9 @@ export const upadateUserProperties = (req, res) => {
   const {name, bio} = req.body
   const foundUser = users.find((user) => user.id === id)
   if (!foundUser) {
-    return res.status(400).json({error: 'User Id is not valid'})
+    return res
+      .status(404)
+      .json({error: 'The user with the specified ID does not exist.'})
   }
   let user = users.find((user) => user.id === id)
   user.updatedAt = new Date()
